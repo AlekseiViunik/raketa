@@ -46,6 +46,8 @@ class CartManager extends ConnectorFacade
                 session_start();
             }
             $cart = $this->connector->get(session_id());
+
+            //TODO Реализовать получение дынных пользователя из сессии
             $customer = new Customer(1, 'First', 'Last', 'Middle', 'email@example.com'); //Заглушка
             return $cart ?: new Cart(session_id(), $customer, 'default_payment_method', []);  // Если корзина не найдена, создаем новую
         } catch (\Exception $e) {
