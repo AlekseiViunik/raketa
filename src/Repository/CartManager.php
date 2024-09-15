@@ -13,14 +13,9 @@ class CartManager extends ConnectorFacade
 {
     private LoggerInterface $logger;
 
-    public function __construct($host, $port, $password)
+    public function __construct(string $host, int $port, ?string $password, LoggerInterface $logger)
     {
-        parent::__construct($host, $port, $password, 1);
-        parent::build();
-    }
-
-    public function setLogger(LoggerInterface $logger)
-    {
+        parent::__construct($host, $port, $password, 1);  // Выбор базы данных 1
         $this->logger = $logger;
     }
 
