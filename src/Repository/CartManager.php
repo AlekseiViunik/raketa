@@ -25,9 +25,13 @@ class CartManager extends ConnectorFacade
     public function saveCart(Cart $cart): void
     {
         try {
-            $this->connector->set($cart, session_id());
-        } catch (Exception $e) {
-            $this->logger->error('Error');
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
+            $this->connector->set(session_id(), $cart);
+        } catch (\Exception $e) {
+            $this->logger->error('Error saving cart: ' . $e->getMessage(), ['exception' => $e]);
         }
     }
 
