@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Raketa\BackendTestTask\Repository;
 
 use Doctrine\DBAL\Connection;
+use Exception;
 use Raketa\BackendTestTask\Repository\Entity\Product;
 
 class ProductRepository
@@ -30,11 +31,16 @@ class ProductRepository
 
     public function getByCategory(string $category): array
     {
+        $sql = "SELECT * FROM products WHERE is_active = 1 AND category = :category";
+        $rows = $this->connection->fetchAllAssociative($sql, ['category' => $category]);
+
+        if (empty($rows)) {
+            return [];
+        }
+
         return array_map(
-            static fn (array $row): Product => $this->make($row),
-            $this->connection->fetchAllAssociative(
-                "SELECT id FROM products WHERE is_active = 1 AND category = " . $category,
-            )
+            fn (array $row): Product => $this->make($row),
+            $rows
         );
     }
 
