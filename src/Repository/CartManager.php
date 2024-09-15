@@ -7,6 +7,7 @@ namespace Raketa\BackendTestTask\Repository;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Raketa\BackendTestTask\Domain\Cart;
+use Raketa\BackendTestTask\Domain\Customer;
 use Raketa\BackendTestTask\Infrastructure\ConnectorFacade;
 
 class CartManager extends ConnectorFacade
@@ -45,7 +46,8 @@ class CartManager extends ConnectorFacade
                 session_start();
             }
             $cart = $this->connector->get(session_id());
-            return $cart ?: new Cart(session_id(), []);  // Если корзина не найдена, создаем новую
+            $customer = new Customer(1, 'First', 'Last', 'Middle', 'email@example.com'); //Заглушка
+            return $cart ?: new Cart(session_id(), $customer, 'default_payment_method', []);  // Если корзина не найдена, создаем новую
         } catch (\Exception $e) {
             $this->logger->error('Error retrieving cart: ' . $e->getMessage(), ['exception' => $e]);
             return null;
