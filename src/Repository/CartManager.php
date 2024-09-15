@@ -38,14 +38,17 @@ class CartManager extends ConnectorFacade
     /**
      * @return ?Cart
      */
-    public function getCart()
+    public function getCart(): ?Cart
     {
         try {
-            return $this->connector->get(session_id());
-        } catch (Exception $e) {
-            $this->logger->error('Error');
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $cart = $this->connector->get(session_id());
+            return $cart ?: new Cart(session_id(), []);  // Если корзина не найдена, создаем новую
+        } catch (\Exception $e) {
+            $this->logger->error('Error retrieving cart: ' . $e->getMessage(), ['exception' => $e]);
+            return null;
         }
-
-        return new Cart(session_id(), []);
     }
 }
