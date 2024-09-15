@@ -22,7 +22,7 @@ class CartManager extends ConnectorFacade
     /**
      * @inheritdoc
      */
-    public function saveCart(Cart $cart)
+    public function saveCart(Cart $cart): void
     {
         try {
             $this->connector->set($cart, session_id());
