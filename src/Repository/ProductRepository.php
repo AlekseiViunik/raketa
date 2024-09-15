@@ -49,11 +49,11 @@ class ProductRepository
         return new Product(
             $row['id'],
             $row['uuid'],
-            $row['is_active'],
+            (bool) $row['is_active'],
             $row['category'],
             $row['name'],
-            $row['description'],
-            $row['thumbnail'],
+            $row['description'] ?? '', // nullable
+            $row['thumbnail'] ?? '',
             $row['price'],
         );
     }
