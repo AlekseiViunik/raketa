@@ -29,6 +29,26 @@ class ProductRepository
         return $this->make($row);
     }
 
+    public function getByUuids(array $uuids): array
+    {
+        if (empty($uuids)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($uuids), '?'));
+
+        $sql = "SELECT * FROM products WHERE uuid IN ($placeholders)";
+
+        $query = $this->connection->executeQuery($sql, $uuids);
+
+        $rows = $query->fetchAllAssociative();
+
+        if (empty($rows)) {
+            return [];
+        }
+
+        return array_map(fn($row) => $this->make($row), $rows);
+    }
+
     public function getByCategory(string $category): array
     {
         $sql = "SELECT * FROM products WHERE is_active = 1 AND category = :category";
