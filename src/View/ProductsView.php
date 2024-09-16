@@ -19,8 +19,8 @@ readonly class ProductsView
                 'id' => $product->getId(),
                 'uuid' => $product->getUuid(),
                 'category' => $product->getCategory(),
-                'description' => $product->getDescription(),
-                'thumbnail' => $product->getThumbnail(),
+                'description' => $product->getDescription() ?? '',
+                'thumbnail' => $product->getThumbnail() ?? '',
                 'price' => $product->getPrice(),
             ],
             $this->productRepository->getByCategory($category)
