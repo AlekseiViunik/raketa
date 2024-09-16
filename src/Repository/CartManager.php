@@ -12,12 +12,10 @@ use Raketa\BackendTestTask\Infrastructure\ConnectorFacade;
 
 class CartManager extends ConnectorFacade
 {
-    private LoggerInterface $logger;
 
     public function __construct(string $host, int $port, ?string $password, LoggerInterface $logger)
     {
-        parent::__construct($host, $port, $password, 1);  // Выбор базы данных 1
-        $this->logger = $logger;
+        parent::__construct($host, $port, $password, 1, $logger);
     }
 
     /**
