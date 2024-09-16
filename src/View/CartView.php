@@ -32,14 +32,29 @@ readonly class CartView
 
         $total = 0;
         $data['items'] = [];
+
+        $productUuids = array_map(fn($item) => $item->getProductUuid(), $cart->getItems());
+        $products = $this->productRepository->getByUuids($productUuids);
+        $productsMap = [];
+
+        foreach ($products as $product) {
+            $productsMap[$product->getUuid()] = $product;
+        }
+
         foreach ($cart->getItems() as $item) {
-            $total += $item->getPrice() * $item->getQuantity();
-            $product = $this->productRepository->getByUuid($item->getProductUuid());
+            $product = $productsMap[$item->getProductUuid()] ?? null;
+
+            if (!$product) {
+                continue;
+            }
+
+            $itemTotal = $item->getPrice() * $item->getQuantity();
+            $total += $itemTotal;
 
             $data['items'][] = [
                 'uuid' => $item->getUuid(),
                 'price' => $item->getPrice(),
-                'total' => $total,
+                'total' => $itemTotal,
                 'quantity' => $item->getQuantity(),
                 'product' => [
                     'id' => $product->getId(),
