@@ -14,7 +14,7 @@ class Connector
 
     public function __construct($redis)
     {
-        return $this->redis = $redis;
+        $this->redis = $redis;
     }
 
     /**
