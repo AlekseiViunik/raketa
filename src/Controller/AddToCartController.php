@@ -8,6 +8,7 @@ use Raketa\BackendTestTask\Domain\CartItem;
 use Raketa\BackendTestTask\Repository\CartManager;
 use Raketa\BackendTestTask\Repository\ProductRepository;
 use Raketa\BackendTestTask\View\CartView;
+use Ramsey\Uuid\Uuid;
 
 readonly class AddToCartController
 {
