@@ -29,7 +29,7 @@ class Connector
             return unserialize($this->redis->get($key));
         } catch (RedisException $e) {
             $this->logger->error('Connector error: ' . $e->getMessage(), ['exception' => $e]);
-            return [];
+            throw new ConnectorException('Connector error', $e->getCode(), $e);
         }
     }
 
