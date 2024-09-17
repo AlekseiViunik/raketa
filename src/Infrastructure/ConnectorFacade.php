@@ -47,7 +47,7 @@ class ConnectorFacade
         if ($isConnected) {
             $redis->auth($this->password);
             $redis->select($this->dbindex);
-            $this->connector = new Connector($redis);
+            $this->connector = new Connector($redis, $this->logger);
         }
     }
 }
